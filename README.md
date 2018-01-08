@@ -7,7 +7,7 @@ Python script to automate the bulk download of IPSWs with a specific criteria. P
 ## Usage:
 
 ```bash
-// "Download all iPod firmwares iOS 10 and above"
+// Download all iPod firmwares iOS 10 and above
 ipsw-get.py -device ipod -min 10 -o /Volumes/MEDIA/ipsws
 
 // Download all iPhone firmwares between iOS 8.4 and 9.3.5
@@ -43,3 +43,14 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         Output directory to download files to
 ```
+
+## Dependencies:
+
+### Required
+
+* Python 2.7/3.5+
+* [requests](https://pypi.python.org/pypi/requests) - HTTP library to interact with api.ipsw.me
+
+### Optional
+
+* [Pycryptodome](https://pypi.python.org/pypi/pycryptodome) - Improves hashing speed

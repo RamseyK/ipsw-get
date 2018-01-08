@@ -8,7 +8,7 @@ from pkg_resources import parse_version
 USE_PYCRYPTODOME = False
 try:
     # Faster
-    import Crypto
+    from Crypto.Hash import MD5
     USE_PYCRYPTODOME = True
 except:
     import hashlib
@@ -24,14 +24,33 @@ def download(url, expected_md5, output_dir):
     fn = os.path.basename(url)
     filepath = os.path.join(os.path.join(output_dir, fn))
     if os.path.exists(filepath):
-        print("{} already exists, skipping..".format(fn))
-        return
+
+        print("Verifying {}..".format(fn))
+
+        if USE_PYCRYPTODOME:
+            verify_md5 = MD5.new()
+        else:
+            verify_md5 = hashlib.md5()
+
+        with open(filepath, 'rb') as fh:
+            blk = fh.read(65535)
+            while blk:
+                verify_md5.update(blk)
+                blk = fh.read(65535)
+
+        if verify_md5.hexdigest().lower() == expected_md5.lower():
+            print("{} already exists with same hash, skipping.\n".format(fn))
+            return
+
+        else:
+            print("Removing incomplete download of {}".format(fn))
+            os.unlink(filepath)
 
     # Download ipsw in chunks
     print("Downloading {} ...".format(fn))
 
     if USE_PYCRYPTODOME:
-        hash_md5 = Crypto.Hash.MD5()
+        hash_md5 = MD5.new()
     else:
         hash_md5 = hashlib.md5()
 
