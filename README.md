@@ -54,3 +54,7 @@ optional arguments:
 ### Optional
 
 * [Pycryptodome](https://pypi.python.org/pypi/pycryptodome) - Improves hashing speed
+
+## License:
+See LICENSE.txt
+
