@@ -48,12 +48,9 @@ optional arguments:
 
 ### Required
 
-* Python 2.7/3.5+
+* Python 3.9+
 * [requests](https://pypi.python.org/pypi/requests) - HTTP library to interact with api.ipsw.me
-
-### Optional
-
-* [Pycryptodome](https://pypi.python.org/pypi/pycryptodome) - Improves hashing speed
+* [packaging](https://pypi.python.org/pypi/packaging) - Parsing version strings
 
 ## License:
 See LICENSE.txt

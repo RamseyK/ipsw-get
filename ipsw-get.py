@@ -1,17 +1,18 @@
-import argparse
-import sys
-import os
-import requests
-import json
-from pkg_resources import parse_version
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "requests",
+#   "packaging",
+# ]
+# ///
 
-USE_PYCRYPTODOME = False
-try:
-    # Faster
-    from Crypto.Hash import MD5
-    USE_PYCRYPTODOME = True
-except:
-    import hashlib
+import argparse
+import hashlib
+import os
+import sys
+import json
+from packaging.version import parse as parse_version
+import requests
 
 
 def download(url, expected_md5, output_dir):
@@ -26,17 +27,13 @@ def download(url, expected_md5, output_dir):
     if os.path.exists(filepath):
 
         print("Verifying {}..".format(fn))
-
-        if USE_PYCRYPTODOME:
-            verify_md5 = MD5.new()
-        else:
-            verify_md5 = hashlib.md5()
+        verify_md5 = hashlib.md5()
 
         with open(filepath, 'rb') as fh:
-            blk = fh.read(65535)
+            blk = fh.read(4096)
             while blk:
                 verify_md5.update(blk)
-                blk = fh.read(65535)
+                blk = fh.read(4096)
 
         if verify_md5.hexdigest().lower() == expected_md5.lower():
             print("{} already exists with same hash, skipping.\n".format(fn))
@@ -48,11 +45,7 @@ def download(url, expected_md5, output_dir):
 
     # Download ipsw in chunks
     print("Downloading {} ...".format(fn))
-
-    if USE_PYCRYPTODOME:
-        hash_md5 = MD5.new()
-    else:
-        hash_md5 = hashlib.md5()
+    hash_md5 = hashlib.md5()
 
     r = requests.get(url, stream=True)
     with open(filepath, 'wb') as fh:
